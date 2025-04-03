@@ -25,6 +25,8 @@
 
         function handleCredentialResponse(response) {
             const idToken = response.credential;
+            console.log(idToken);
+            console.log(decodeURIComponent(idToken));
 
             // Exchange ID Token for an Access Token
             fetch("https://oauth2.googleapis.com/token", {
@@ -35,7 +37,7 @@
                     client_secret: "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",
                     grant_type: "authorization_code",
                     redirect_uri: "postmessage",
-                    code: idToken
+                    code: decodeURIComponent(idToken)
                 })
             })
             .then(res => res.json())
