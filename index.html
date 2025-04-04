@@ -41,6 +41,9 @@
 
             const authInstance = gapi.auth2.getAuthInstance();
             authInstance.signIn().then(user => {
+                console.log(user);
+                console.log(user.getAuthResponse());
+                console.log(user.getAuthResponse().access_token);
                 accessToken = user.getAuthResponse().access_token;
                 document.getElementById("fileInput").disabled = false;
                 document.querySelector("button").disabled = false;
