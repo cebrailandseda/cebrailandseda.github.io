@@ -47,7 +47,7 @@
                 accessToken = user.getAuthResponse().access_token;
                 document.getElementById("fileInput").disabled = false;
                 document.querySelector("button").disabled = false;
-                document.getElementById("status").innerText = "Signed in!";
+                document.getElementById("status").innerText = "Signed in!!";
             }).catch(error => {
                 console.error("Google Sign-In Error:", error);
             });
@@ -55,6 +55,8 @@
     }
 
     async function uploadFile() {
+        console.log("upload");
+        console.log(accessToken);
         if (!accessToken) {
             alert("Please sign in first.");
             return;
