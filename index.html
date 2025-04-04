@@ -29,32 +29,20 @@
     const FOLDER_ID = "1YpvJh_lC8_4nQAPWjI9p7AJX--h1hVZx";
 
     function handleCredentialResponse(response) {
-        const idToken = response.credential;
-
-        // Exchange ID Token for an Access Token
-        fetch("https://oauth2.googleapis.com/token", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({
-                client_id: "616744177005-le66vhs97ebn2bqf06cb4f1tble3llli.apps.googleusercontent.com",
-                client_secret: "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",
-                grant_type: "authorization_code",
-                redirect_uri: "postmessage",
-                code: idToken
-            })
-        })
-          .then(res => res.json())
-          .then(data => {
-              if (data.access_token) {
-                  accessToken = data.access_token;
-                  document.getElementById("fileInput").disabled = false;
-                  document.querySelector("button").disabled = false;
-                  document.getElementById("status").innerText = "Signed in!";
-              } else {
-                  document.getElementById("status").innerText = "Failed to get access token.";
-              }
-          })
-          .catch(error => console.error("Error getting access token:", error));
+        google.accounts.oauth2.initTokenClient({
+            client_id: "616744177005-le66vhs97ebn2bqf06cb4f1tble3llli.apps.googleusercontent.com",
+            scope: "https://www.googleapis.com/auth/drive.file",
+            callback: (tokenResponse) => {
+                if (tokenResponse.access_token) {
+                    accessToken = tokenResponse.access_token;
+                    document.getElementById("fileInput").disabled = false;
+                    document.querySelector("button").disabled = false;
+                    document.getElementById("status").innerText = "Signed in!";
+                } else {
+                    document.getElementById("status").innerText = "Failed to get access token.";
+                }
+            }
+        }).requestAccessToken();
     }
 
     async function uploadFile() {
