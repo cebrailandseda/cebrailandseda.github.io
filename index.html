@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cebrail & Seda 💍</title>
 
-    <!-- Load Google API Client -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- Tailwind CSS for Styling -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -24,41 +22,42 @@
     <h1 class="text-2xl font-semibold text-gray-800">💍 Partagez vos souvenirs</h1>
     <p class="text-gray-600 mt-2">Téléchargez vos plus belles photos et vidéos du mariage !</p>
 
-<!-- Google Sign-In Button -->
-<div id="g_id_onload"
-     data-client_id="994422865355-o0j0bk0mfmiamjn4ouh7l01odusaqerp.apps.googleusercontent.com"
-     data-auto_prompt="false"
-     data-callback="handleCredentialResponse">
-</div>
-<div class="g_id_signin" data-type="standard"></div>
+    <!-- Connect Button -->
+    <button onclick="startGoogleLogin()" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-600 transition">
+        🔐 Se connecter avec Google
+    </button>
 
-<!-- File Upload -->
-<input type="file" id="fileInput" class="mt-4 border border-gray-300 p-2 rounded-lg w-full" disabled>
-<button onclick="uploadFile()" class="bg-pink-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-pink-600 transition" disabled>📤 Télécharger</button>
-<p id="status" class="text-gray-700 mt-3"></p>
+    <!-- File Upload -->
+    <input type="file" id="fileInput" class="mt-4 border border-gray-300 p-2 rounded-lg w-full" disabled>
+    <button onclick="uploadFile()" id="uploadBtn" class="bg-pink-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-pink-600 transition" disabled>
+        📤 Télécharger
+    </button>
+
+    <p id="status" class="text-gray-700 mt-3"></p>
 </div>
 
 <script>
-    let accessToken = null;
+    const CLIENT_ID = "994422865355-o0j0bk0mfmiamjn4ouh7l01odusaqerp.apps.googleusercontent.com";
     const FOLDER_ID = "1YpvJh_lC8_4nQAPWjI9p7AJX--h1hVZx";
+    let accessToken = null;
 
-    function handleCredentialResponse(response) {
-        google.accounts.oauth2.initTokenClient({
-            client_id: "994422865355-o0j0bk0mfmiamjn4ouh7l01odusaqerp.apps.googleusercontent.com",
-            scope: "https://www.googleapis.com/auth/drive.file",
-            prompt: "",
-            callback: (tokenResponse) => {
-                if (tokenResponse.access_token) {
-                    accessToken = tokenResponse.access_token;
-                    document.getElementById("fileInput").disabled = false;
-                    document.querySelector("button").disabled = false;
-                    document.getElementById("status").innerText = "✅ Connecté !";
-                } else {
-                    document.getElementById("status").innerText = "Failed to get access token.";
-                }
-            }
-        }).requestAccessToken();
+    function startGoogleLogin() {
+        const redirectUri = window.location.origin + window.location.pathname;
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=https://www.googleapis.com/auth/drive.file&include_granted_scopes=true`;
+        window.location.href = authUrl;
     }
+
+    window.onload = () => {
+        const hash = window.location.hash;
+        if (hash.includes("access_token")) {
+            const params = new URLSearchParams(hash.substring(1));
+            accessToken = params.get("access_token");
+
+            document.getElementById("fileInput").disabled = false;
+            document.getElementById("uploadBtn").disabled = false;
+            document.getElementById("status").innerText = "✅ Connecté via Google !";
+        }
+    };
 
     async function uploadFile() {
         if (!accessToken) {
