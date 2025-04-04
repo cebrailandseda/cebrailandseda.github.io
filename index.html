@@ -32,7 +32,7 @@
     <div id="uploadSection" class="hidden">
         <!-- File Upload -->
         <input type="file" id="fileInput" multiple class="mt-4 border border-gray-300 p-2 rounded-lg w-full" disabled>
-        <button onclick="uploadFile()" id="uploadBtn" class="bg-pink-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-pink-600 transition" disabled>
+        <button onclick="uploadFile()" id="uploadBtn" class="bg-pink-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-pink-600 transition hidden" disabled>
             📤 Télécharger
         </button>
 
@@ -102,7 +102,17 @@
             }
             document.getElementById("status").innerText = "🎉 Tous les fichiers ont été envoyés avec succès ! Merci ❤️";
         }
+    }
+
+    //EVENTS
+    document.getElementById("fileInput").addEventListener("change", function () {
+        const uploadBtn = document.getElementById("uploadBtn");
+        if (this.files && this.files.length > 0) {
+            uploadBtn.classList.remove("hidden");
+        } else {
+            uploadBtn.classList.add("hidden");
         }
+    });
 </script>
 </body>
 </html>
