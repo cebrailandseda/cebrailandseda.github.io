@@ -43,6 +43,7 @@
 
     function startGoogleLogin() {
         const redirectUri = window.location.origin + window.location.pathname;
+        console.log(redirectUri);
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=https://www.googleapis.com/auth/drive.file&include_granted_scopes=true`;
         window.location.href = authUrl;
     }
