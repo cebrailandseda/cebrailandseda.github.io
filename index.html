@@ -46,6 +46,7 @@
         google.accounts.oauth2.initTokenClient({
             client_id: "994422865355-o0j0bk0mfmiamjn4ouh7l01odusaqerp.apps.googleusercontent.com",
             scope: "https://www.googleapis.com/auth/drive.file",
+            prompt: "",
             callback: (tokenResponse) => {
                 if (tokenResponse.access_token) {
                     accessToken = tokenResponse.access_token;
