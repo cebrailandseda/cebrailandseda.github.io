@@ -156,7 +156,7 @@
                     resolve();
                 } else if (xhr.status === 401) {
                     // Token is invalid or expired
-                    await handleExpiredToken();
+                    handleExpiredToken();
                     reject();
                 } else {
                     barElement.style.backgroundColor = "#dc2626"; // red if error
