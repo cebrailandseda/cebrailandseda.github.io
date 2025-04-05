@@ -79,7 +79,7 @@
             }
         }
     }
-    
+
     function showUploadUI() {
         document.getElementById("signinSection").classList.add("hidden");
         document.getElementById("uploadSection").classList.remove("hidden");
@@ -154,6 +154,10 @@
                 if (xhr.status === 200) {
                     barElement.style.backgroundColor = "#16a34a"; // green when done
                     resolve();
+                } else if (xhr.status === 401) {
+                    // Token is invalid or expired
+                    await handleExpiredToken();
+                    reject();
                 } else {
                     barElement.style.backgroundColor = "#dc2626"; // red if error
                     reject();
@@ -167,6 +171,10 @@
 
             xhr.send(form);
         });
+    }
+
+    async function handleExpiredToken() {
+        startGoogleLogin();
     }
 
 
