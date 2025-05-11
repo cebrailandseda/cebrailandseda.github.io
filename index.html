@@ -38,6 +38,7 @@
 
         <p id="status" class="text-gray-700 mt-3"></p>
         <div id="progressContainer" class="mt-4 space-y-2"></div>
+        <p id="driveLink" class="text-blue-600 underline mt-4 hidden"></p>
     </div>
 </div>
 
@@ -86,6 +87,10 @@
         document.getElementById("fileInput").disabled = false;
         document.getElementById("uploadBtn").disabled = false;
         document.getElementById("status").innerText = "✅ Connecté ! Prêt à envoyer vos fichiers.";
+
+        const driveLink = document.getElementById("driveLink");
+        driveLink.innerHTML = `<a href="https://drive.google.com/drive/folders/1YpvJh_lC8_4nQAPWjI9p7AJX--h1hVZx?usp=sharing" target="_blank" rel="noopener noreferrer">📁 Voir la galerie</a>`;
+        driveLink.classList.remove("hidden");
     }
 
     function showLoginUI(message) {
